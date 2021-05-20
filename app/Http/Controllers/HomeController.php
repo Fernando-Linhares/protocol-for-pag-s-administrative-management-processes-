@@ -1,41 +1,44 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Document;
 use App\Models\Historic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Storage;
+use App\Http\Requests\DocumentSendRequest;
+use App\Models\Document;
 
 class HomeController extends Controller
 {
     public function __construct(
-        private Storage $storage
+        private Storage $storage,
+        private Historic $historic,
+        private User $user,
+        private Document $document
         ){}
 
     public function index()
     {
-        $storage = $this->storage->where('user_id',Auth::user()->id)
+        $storage = $this->storage
+        ->where('user_id',Auth::user()->id)
         ->where('ondashboard',true)->get();
         return view('dashboard')->with('documents',$storage);
     }
 
-    public function store(Request $request)
+    public function store(DocumentSendRequest $request)
     {
         foreach($request->id as $document_id){
             $user_name = $request->user;
-            $user_id = User::where('name',$user_name)->get();
-            $user_id = $user_id[0]->id;
-    
-            $historic = new Historic;
-            $historic->user_id = $user_id;
-            $historic->doc_id = $document_id;
-            $historic->acept = false;
-            $historic->save();
-    
+            $user_id = $this->user->where('name',$user_name)->first()->id;
+
+            $this->historic->user_id = $user_id;
+            $this->historic->doc_id = $document_id;
+            $this->historic->acept = false;
+            $this->historic->save();
+
             $storage = $this->storage->where('doc_id',$document_id)->first();
-            $storage->ondashboard=false;
+            $storage->ondashboard = false;
             $storage->user_id = $user_id;
             $storage->save();
         }
@@ -54,26 +57,23 @@ class HomeController extends Controller
         foreach($request->id as $document_id){
             $user_id = Auth::user()->id;;
     
-            $historic = new Historic;
-            $historic->user_id = $user_id;
-            $historic->doc_id = $document_id;
-            $historic->acept = true;
-            $historic->save();
+            $this->historic->user_id = $user_id;
+            $this->historic->doc_id = $document_id;
+            $this->historic->acept = true;
+            $this->historic->save();
     
-            $storage = $this->storage->where('doc_id',$document_id)->first();
-            $storage->ondashboard=true;
-            $storage->user_id = $user_id;
-            $storage->save();
+            $this->storage = $this->storage->where('doc_id',$document_id)->first();
+            $this->storage->ondashboard = true;
+            $this->storage->user_id = $user_id;
+            $this->storage->save();
         }
         return redirect()->route('entry');
     }
 
     public function searchFrom(Request $request)
     {
-        $document = Document::where('number',$request->number)->first();
-    
-        $historics = Historic::where('doc_id',$document->id)->get();
-        
+        $document = $this->storage->where('number',$request->number)->first();
+        $historics = $this->historic->where('doc_id',$document->id)->get();
         return view('historic')->with('historics',$historics);
     }
 
@@ -84,9 +84,19 @@ class HomeController extends Controller
 
     public function updateDocument(Request $request)
     {
-        $doc = Document::create($request->except('token'));
-        Historic::create(['id'=>null,'doc_id'=>$doc->id,'user_id'=>Auth::user()->id,'acept'=>true]);
-        Storage::create(['id'=>null,'doc_id'=>$doc->id,'user_id'=>Auth::user()->id,'ondashboard'=>true]);
+        $doc = $this->document->create($request->except('token'));
+        $this->historic->create([
+            'id'=>null,
+            'doc_id'=>$doc->id,
+            'user_id'=>Auth::user()->id,
+            'acept'=>true
+            ]);
+        $this->storage->create([
+            'id'=>null,
+            'doc_id'=>$doc->id,
+            'user_id'=>Auth::user()->id,
+            'ondashboard'=>true
+            ]);
         return redirect()->route('create');
     }
 }
