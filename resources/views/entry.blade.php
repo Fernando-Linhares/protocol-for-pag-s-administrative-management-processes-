@@ -4,7 +4,17 @@
             {{ __('Mesa de trabalho') }}
         </h2>
     </x-slot>
+    @foreach ($errors->all() as $error)
+        <div class="bg-red-400 p-4 flex justify-center text-white">
+            {{$error}}
+        </div>
+    @endforeach
 
+    @if(session('message')!== null)
+        <div class="bg-green-500 p-4 flex justify-center text-white">
+            {{session('message')}}
+        </div>
+    @endif
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Storage;
-use App\Models\Document;
 use App\Http\Requests\{
     DocumentSendRequest,
-    DocumentCreateRequest
+    DocumentCreateRequest,
+    AceptDocumentRequest
 };
 use App\Repository\Contracts\DocumentSendRepositoryInterface;
 
@@ -19,7 +19,6 @@ class HomeController extends Controller
         private Storage $storage,
         private Historic $historic,
         private User $user,
-        private Document $document,
         private DocumentSendRepositoryInterface $document_repository
         ){}
 
@@ -49,13 +48,13 @@ class HomeController extends Controller
         return view('entry')->with('documents',$storage);
     }
 
-    public function aceptDocument(Request $request)
+    public function aceptDocument(AceptDocumentRequest $request)
     {
         foreach($request->id as $document){
             $user = Auth::user()->id;;    
             $this->document_repository->aceptDocument($user,$document);
         }
-        return redirect()->route('entry')->with('message','Item aceito com sucesso');
+        return redirect()->route('entry')->with('message','Documento(s) aceito(s) com sucesso');
     }
 
     public function searchFrom(Request $request)
