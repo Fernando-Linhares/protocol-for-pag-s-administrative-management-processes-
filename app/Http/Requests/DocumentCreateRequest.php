@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\HasDocument;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Rules\CalledSelf;
-use App\Rules\HasUser;
 use Illuminate\Support\Facades\Auth;
 
-class DocumentSendRequest extends FormRequest
+class DocumentCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,20 +26,25 @@ class DocumentSendRequest extends FormRequest
     public function rules()
     {
         return [
-            'user'=>[
+            'title'=>'required|max:50|min:5',
+            'content'=>'required|min:10',
+            'unit'=>'required',
+            'number'=>[
                 'required',
-                new HasUser,
-                new CalledSelf
+                new HasDocument
             ],
-            'id'=>'required'
+            'vol'=>'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'user.required'=>'nome do destinatário obrigatório',
-            'id.required'=>'selecione um item para envio',
+            'title.required'=>'campo titulo é obrigatorio',
+            'content.required'=>'campo assunto é obrigatorio',
+            'unit.required'=>'campo unidade é obrigatorio',
+            'number.required'=>'campo número é obrigatorio',
+            'vol.required'=>'campo volume é obrigatorio',
         ];
     }
 }
