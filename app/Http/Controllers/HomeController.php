@@ -11,6 +11,7 @@ use App\Http\Requests\{
     DocumentCreateRequest,
     AceptDocumentRequest
 };
+use App\Models\Document;
 use App\Repository\Contracts\DocumentSendRepositoryInterface;
 
 class HomeController extends Controller
@@ -18,6 +19,7 @@ class HomeController extends Controller
     public function __construct(
         private Storage $storage,
         private Historic $historic,
+        private Document $document,
         private User $user,
         private DocumentSendRepositoryInterface $document_repository
         ){}
@@ -59,7 +61,7 @@ class HomeController extends Controller
 
     public function searchFrom(Request $request)
     {
-        $request->validate(['number'=>'required']);
+        $request->validate(['number'=>'required'],['number.required'=>'nenhum item encontrado']);
         $document = $this->document->where('number',$request->number)->first();
         $historics = $this->historic->where('doc_id',$document->id)->get();
         return view('historic')->with('historics',$historics);
