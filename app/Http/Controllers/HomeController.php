@@ -60,7 +60,7 @@ class HomeController extends Controller
     public function searchFrom(Request $request)
     {
         $request->validate(['number'=>'required']);
-        $document = $this->storage->where('number',$request->number)->first();
+        $document = $this->document->where('number',$request->number)->first();
         $historics = $this->historic->where('doc_id',$document->id)->get();
         return view('historic')->with('historics',$historics);
     }
