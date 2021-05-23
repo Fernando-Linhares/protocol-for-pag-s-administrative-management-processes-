@@ -16,7 +16,7 @@ use App\Http\Controllers\{
 |
 */
 
-Route::get('/',[AuthenticatedSessionController::class, 'create'])->middleware(['auth']);
+Route::get('/',[AuthenticatedSessionController::class, 'create']);
 
 Route::get('/dashboard',[HomeController::class,"index"])
 ->middleware(['auth'])
