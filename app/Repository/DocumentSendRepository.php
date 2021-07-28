@@ -1,6 +1,7 @@
 <?php
 namespace App\Repository;
 
+use App\Models\Historic;
 use App\Repository\Contracts\DocumentSendRepositoryInterface;
 use App\Models\User;
 
@@ -46,5 +47,15 @@ class DocumentSendRepository implements DocumentSendRepositoryInterface
             User::idByName($user),
             $document
         );
+    }
+
+    /**
+     * @param object $user
+     * @param bool $acept=false
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function getDocumentsOf(object $user, bool $acept=false)
+    {
+        return Historic::documentsOf($user->id, $acept);
     }
 }

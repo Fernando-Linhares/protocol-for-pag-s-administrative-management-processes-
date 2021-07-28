@@ -17,6 +17,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repository\Contracts\DocumentSendRepositoryInterface',
             'App\Repository\DocumentSendRepository'
         );
+
+        $this->app->bind(
+            'App\Services\Contracts\DisplayInterface',
+            'App\Services\DisplayHistoric'
+        );
     }
 
     /**

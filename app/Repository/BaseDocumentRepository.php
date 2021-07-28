@@ -1,10 +1,8 @@
 <?php
 namespace App\Repository;
 
-use App\Models\{
-    Historic,
-    Document,
-};
+use App\Models\Historic;
+use App\Models\Document;
 
 trait BaseDocumentRepository
 {

@@ -22,4 +22,10 @@ class Historic extends Model
     {
         return $this->belongsTo(Document::class);
     }
+
+
+    public function scopeDocumentsOf($query, int $user, bool $acept=false)
+    {
+        return $query->where('user_id',$user)->where('acept',$acept)->get();
+    }
 }

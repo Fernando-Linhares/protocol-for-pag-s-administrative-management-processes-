@@ -42,6 +42,6 @@ class User extends Authenticatable
     ];
 
     public function scopeIdByName($query,$name){
-        return $query->where('name',$name)->get()->first()->id;
+        return $query->where('name',$name)->first()->id;
     }
 }

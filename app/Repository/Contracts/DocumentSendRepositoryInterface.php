@@ -8,4 +8,6 @@ interface DocumentSendRepositoryInterface
     public function aceptDocument(string $user, int $document): bool;
 
     public function newDocument(string $user, array $document): bool;
+
+    public function getDocumentsOf(object $user, bool $acept);
 }
