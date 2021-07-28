@@ -3,45 +3,24 @@ namespace App\Repository;
 
 use App\Models\{
     Historic,
-    Storage,
-    Document
+    Document,
 };
 
 trait BaseDocumentRepository
 {
-    public function processManegementTransfer(int $user_id,int $document_id, bool $value): bool
+    public function processManegementTransfer(int $user_id,int $document_id, bool $value=false): bool
     {
-        $historic = new Historic;
-        $historic->user_id = $user_id;
-        $historic->doc_id = $document_id;
-        $historic->acept = $value;
+        if(Historic::create(['user_id'=>$user_id,'doc_id'=>$document_id,'acept'=>$value]))
+            return true;
 
-        $storage = Storage::where('doc_id',$document_id)->first();
-        $storage->ondashboard = $value;
-        $storage->user_id = $user_id;
-        $storage->save();
-
-        return $historic->save() && $storage->save;
+        return false;
     }
 
     public function createDocument(int $user_id, array $document): bool
     {
-        $document_id = Document::create($document)->id;
+        if($document_id = Document::create($document)->id)
+            return $this->processManegementTransfer($user_id, $document_id, true);
 
-        Historic::create([
-            'id'=>null,
-            'doc_id'=>$document_id,
-            'user_id'=>$user_id,
-            'acept'=>true
-            ]);
-
-        Storage::create([
-            'id'=>null,
-            'doc_id'=>$document_id,
-            'user_id'=>$user_id,
-            'ondashboard'=>true
-            ]);
-
-        return true;
+        return false;
     }
 }

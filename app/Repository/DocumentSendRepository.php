@@ -2,31 +2,49 @@
 namespace App\Repository;
 
 use App\Repository\Contracts\DocumentSendRepositoryInterface;
+use App\Models\User;
 
 class DocumentSendRepository implements DocumentSendRepositoryInterface
 {
     use BaseDocumentRepository;
 
-    public function transferDocument(int $user,int $document): bool
+    /**
+     * @param string $user
+     * @param int $document
+     * @return bool true|false
+     */
+    public function sendDocument(string $user,int $document): bool
     {
         return $this->processManegementTransfer(
-            user_id: $user,
-            document_id: $document,
-            value: false
+            User::idByName($user),
+            $document
         );
     }
 
-    public function aceptDocument(int $user, int $document): bool
+    /**
+     * @param string $user
+     * @param int $document
+     * @return bool true|false
+     */
+    public function aceptDocument(string $user, int $document): bool
     {
         return $this->processManegementTransfer(
-            user_id: $user,
-            document_id: $document,
-            value: true
+            User::idByName($user),
+            $document,
+            true
         );
     }
 
-    public function newDocument(int $user, array $document): bool
+    /**
+     * @param string $user
+     * @param int $document
+     * @return bool true|false
+     */
+    public function newDocument(string $user, array $document): bool
     {
-        return $this->createDocument($user,$document);
+        return $this->createDocument(
+            User::idByName($user),
+            $document
+        );
     }
 }

@@ -3,9 +3,9 @@ namespace App\Repository\Contracts;
 
 interface DocumentSendRepositoryInterface
 {
-    public function transferDocument(int $user,int $document): bool;
+    public function sendDocument(string $user,int $document): bool;
 
-    public function aceptDocument(int $user, int $document): bool;
+    public function aceptDocument(string $user, int $document): bool;
 
-    public function newDocument(int $user,array $document): bool;
+    public function newDocument(string $user, array $document): bool;
 }
