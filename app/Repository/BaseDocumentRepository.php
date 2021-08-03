@@ -8,7 +8,11 @@ trait BaseDocumentRepository
 {
     public function processManegementTransfer(int $user_id,int $document_id, bool $value=false): bool
     {
-        if(Historic::create(['user_id'=>$user_id,'doc_id'=>$document_id,'acept'=>$value]))
+        $document = Document::find($document_id);
+        $document->user_id = $user_id;
+        $document->save();
+
+        if(Historic::create(['user_id'=>$user_id, 'doc_id'=>$document_id,'acept'=>$value]))
             return true;
 
         return false;
@@ -21,4 +25,5 @@ trait BaseDocumentRepository
 
         return false;
     }
+
 }

@@ -26,7 +26,9 @@ class DocumentFactory extends Factory
             'content'=>$this->faker->sentence(),
             'unit'=>rand(1000,4000),
             'number'=>rand(2000,3000),
-            'vol'=>rand(10,20)
+            'vol'=>rand(10,20),
+            'user_id'=>rand(1,30),
+            'acepted'=>true
         ];
     }
 }

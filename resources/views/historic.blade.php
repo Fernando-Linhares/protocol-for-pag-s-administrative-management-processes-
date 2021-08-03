@@ -19,7 +19,6 @@
                                     <table class="min-w-full divide-y divide-gray-200">
                                         <thead class="bg-gray-50">
                                             <tr>
-                                                <td>#</td>
                                                 <td>nome</td>
                                                 <td>aceito</td>
                                                 <td>data</td>
@@ -27,17 +26,13 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($historics as $historic)
-                                            <tr>
                                                 <td>
-                                                    {{$historic->id}}
+                                                    {{$historic['user']}}
                                                 </td>
                                                 <td>
-                                                    {{$historic->user->name}}
-                                                </td>
+                                                    {{$historic['acepted']}}</td>
                                                 <td>
-                                                    {{$historic->acept?'recebido':'não recebido'}}                                                </td>
-                                                <td>
-                                                    {{str_replace('-','/',$historic->created_at)}}
+                                                    {{$historic['date']}}
                                                 </td>
                                             </tr>
                                             @endforeach

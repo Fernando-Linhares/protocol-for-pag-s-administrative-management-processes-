@@ -14,15 +14,6 @@ class DocumentSeeder extends Seeder
      */
     public function run()
     {
-        for($i=0; $i<20; $i++):
-            Document::create([
-                'id'=>null,
-                'title'=>'Contrato De Empresa',
-                'content'=>'Contrato de empresa de limpeza para unidade',
-                'unit'=>67221,
-                'number'=>rand(3000,4000),
-                'vol'=>rand(1,99)
-                ]);
-        endfor;
+       Document::factory(10)->create();
     }
 }

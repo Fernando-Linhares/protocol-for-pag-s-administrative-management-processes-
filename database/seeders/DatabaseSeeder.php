@@ -13,8 +13,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        (new DocumentSeeder)->run();
-        (new StorageSeeder)->run();
-        (new HistoricSeeder)->run();
+       $this->call(DocumentSeeder::class);
     }
 }

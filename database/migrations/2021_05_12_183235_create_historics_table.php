@@ -17,7 +17,6 @@ class CreateHistoricsTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('doc_id');
-            $table->boolean('acept');
             $table->timestamps();
         });
     }

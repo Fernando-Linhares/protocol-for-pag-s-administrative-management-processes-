@@ -39,16 +39,16 @@
                                             @foreach ($documents as $document)
                                             <tr>
                                                 <td>
-                                                    {{$document->doc->id}}
+                                                    {{$document->id}}
                                                 </td>
                                                 <td>
-                                                    {{$document->doc->unit}}.{{$document->doc->number}}/{{$document->doc->date}}-{{$document->doc->vol}}
+                                                    {{$document->unit}}.{{$document->number}}/{{$document->date}}-{{$document->vol}}
                                                 </td>
                                                 <td>
-                                                    {{$document->doc->title}}
+                                                    {{$document->title}}
                                                 </td>
                                                 <td>
-                                                    <input type="checkbox" value="{{$document->doc->id}}" name="id[]">
+                                                    <input type="checkbox" value="{{$document->id}}" name="id[]">
                                                 </td>
                                             </tr>
                                             @endforeach

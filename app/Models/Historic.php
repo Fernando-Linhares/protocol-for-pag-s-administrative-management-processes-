@@ -15,17 +15,28 @@ class Historic extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function doc()
     {
-        return $this->belongsTo(Document::class);
+        return $this->belongsTo(Document::class,'doc_id','id');
     }
 
 
-    public function scopeDocumentsOf($query, int $user, bool $acept=false)
+    public function scopeGetCronogram($query, int $id)
     {
-        return $query->where('user_id',$user)->where('acept',$acept)->get();
+        return $query->where('doc_id', $id)
+        ->get()
+        ->map(
+            function($historic){
+
+                $date = date("d/m/Y" ,strtotime($historic->created_at));
+                return collect([
+                    'user' => $historic->user->name,
+                    'date' => $date
+                ]);
+            }
+        );
     }
 }

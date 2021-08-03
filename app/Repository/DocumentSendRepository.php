@@ -56,6 +56,13 @@ class DocumentSendRepository implements DocumentSendRepositoryInterface
      */
     public function getDocumentsOf(object $user, bool $acept=false)
     {
-        return Historic::documentsOf($user->id, $acept);
+        $user_id = $user->id;
+        return User::find($user_id)
+        ->documents
+        ->filter(
+            function($document)use($user_id){
+                return $document->user_id == $user_id;
+            }
+        );
     }
 }

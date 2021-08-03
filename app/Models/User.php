@@ -41,7 +41,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function scopeIdByName($query,$name){
-        return $query->where('name',$name)->first()->id;
+    public function scopeIdByName($query, $name){
+        return $query->where('name', $name)->first()->id;
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
     }
 }

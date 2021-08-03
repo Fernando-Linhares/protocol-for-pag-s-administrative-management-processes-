@@ -20,6 +20,8 @@ class CreateDocumentsTable extends Migration
             $table->integer('unit');
             $table->integer('number');
             $table->integer('vol');
+            $table->integer('user_id');
+            $table->boolean('acepted');
             $table->timestamps();
         });
     }
